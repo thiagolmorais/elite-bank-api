@@ -15,6 +15,10 @@ const userSchema = new Mongoose.Schema({
     balance: {
         type: Number,
         required: true
+    },
+    email: {
+        type: String,
+        required: true
     },    
     insertedAt: {
         type: Date,

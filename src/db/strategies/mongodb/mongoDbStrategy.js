@@ -45,11 +45,11 @@ class MongoDB extends ICrud {
     async read(item = {}) {
         return this._collection.find(item, { name: 1, balance: 1, account: 1})
     }
-    async update(id, item) {
-        return this._collection.updateOne({_id: id}, { $set: item})
+    async update(account, item) {
+        return this._collection.updateOne({account}, { $set: item})
     }    
-    async delete(id) {
-        return this._collection.deleteOne({_id: id})
+    async delete(account) {
+        return this._collection.deleteOne({account})
     }
 }
 

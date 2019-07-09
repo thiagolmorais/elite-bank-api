@@ -15,7 +15,8 @@ const MOCK_USER_CADASTRAR = {
     name: 'Warren',
     password: '101010',
     account: 00001,
-    balance: 1000000
+    balance: 1000000,
+    email: 'joao@email.com'
 };
 
 const MOCK_USER_LISTAR = {
@@ -28,9 +29,10 @@ const MOCK_USER_ATUALIZAR = {
     name: 'Eik',
     password: '202020',
     account: 00002,
-    balance: 5000
+    balance: 5000,
+    email: 'email@email.com'
 };
-let MOCK_USER_ATUALIZAR_ID = '';
+let MOCK_USER_ATUALIZAR_ACCOUNT = '';
 let contextUser = {}
 let contextTransfer = {}
 
@@ -41,7 +43,7 @@ describe('MongoDB Suite de testes', function () {
         contextTransfer = new Context( new MongoDb(connection, TransferSchema))
 
         const result = await contextUser.create(MOCK_USER_ATUALIZAR)
-        MOCK_USER_ATUALIZAR_ID = result._id
+        MOCK_USER_ATUALIZAR_ACCOUNT = result.account
     })
     it('verificar conexao', async () => {
         const result = await contextUser.isConnected()
@@ -50,9 +52,9 @@ describe('MongoDB Suite de testes', function () {
         assert.deepEqual(result, expected)
     })
     it('cadastrar', async () => {
-        const { name, password, balance, account } = await contextUser.create(MOCK_USER_CADASTRAR)
+        const { name, password, balance, account, email} = await contextUser.create(MOCK_USER_CADASTRAR)
         
-        assert.deepEqual({ name, password, balance, account }, MOCK_USER_CADASTRAR)
+        assert.deepEqual({ name, password, balance, account, email }, MOCK_USER_CADASTRAR)
     })
 
     it('listar', async () => {
@@ -63,13 +65,13 @@ describe('MongoDB Suite de testes', function () {
         assert.deepEqual(result, MOCK_USER_LISTAR)
     })
     it('atualizar', async () => {
-        const result = await contextUser.update(MOCK_USER_ATUALIZAR_ID, {
+        const result = await contextUser.update(MOCK_USER_ATUALIZAR_ACCOUNT, {
             balance: '5555'
         })
         assert.deepEqual(result.nModified, 1)
     })
     it('remover', async () => {
-        const result = await contextUser.delete(MOCK_USER_ATUALIZAR_ID)
+        const result = await contextUser.delete(MOCK_USER_ATUALIZAR_ACCOUNT)
         assert.deepEqual(result.n, 1)
     })
 })
