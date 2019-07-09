@@ -1,40 +1,18 @@
 // npm i mongoose
-const Mongoose = require('mongoose')
-Mongoose.connect('mongodb://erickwendel:minhaoutrasenhasecreta@localhost:27017/herois', {
-  useNewUrlParser: true
-}, (error) => {
-  if (!error) return;
-  console.error('error to connect on mongodb', error)
-})
+const UserSchema = require('./src/db/strategies/mongodb/schemas/userSchema')
+const MongoDb = require('./src/db/strategies/mongodb/mongoDbStrategy')
+const Context = require('./src/db/strategies/base/contextStrategy')
 
-const connection = Mongoose.connection
-connection.once('open', () => console.log('db is running!'))
+const connection = MongoDb.connect()
+contextUser = new Context(new MongoDb(connection, UserSchema))
 
-const heroiSchema = new Mongoose.Schema({
-  nome: {
-    type: String,
-    required: true
-  },
-  poder: {
-    type: String,
-    required: true
-  },
-  nascimento: {
-    type: Date,
-    required: true
-  },
-})
-const model = Mongoose.model('herois', heroiSchema)
 async function main() {
-  const result = await model.create({
-    nome: 'Batman',
-    poder: 'Dinheiro',
-    nascimento: new Date(1970, 01, 01)
+  const { name, password, balance, account } = await contextUser.create({
+    name: 'Batman',
+    password: '908762',
+    account: 100003,
+    balance: 100000
   })
-  console.log('result', result)
-
-  const items = await model.find()
-  console.log('items', items)
-
+  console.log('result', name, password, balance, account)
 }
 main()
