@@ -14,27 +14,26 @@ const Context = require('./../src/db/strategies/base/contextStrategy')
 const MOCK_USER_CADASTRAR = {
     name: 'Warren',
     password: '101010',
-    account: 00001,
+    account: 10001,
     balance: 1000000,
     email: 'joao@email.com'
 };
 
 const MOCK_USER_LISTAR = {
     name: 'Warren',
-    account: 00001,
+    account: 10001,
     balance: 1000000
 };
 
 const MOCK_USER_ATUALIZAR = {
     name: 'Eik',
     password: '202020',
-    account: 00002,
+    account: 10002,
     balance: 5000,
     email: 'email@email.com'
 };
 let MOCK_USER_ATUALIZAR_ACCOUNT = '';
 let contextUser = {}
-let contextTransfer = {}
 
 describe.only('MongoDB Suite de testes', function () {
     this.beforeAll(async () => {
