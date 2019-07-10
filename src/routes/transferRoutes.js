@@ -10,6 +10,9 @@ class TransferRoutes extends BaseRoute {
         return {
             path: '/transfer',
             method: 'GET',
+            config:{
+                
+            },
             handler: (request, headers) => {
                 return this.db.read()
             }
@@ -28,7 +31,7 @@ class TransferRoutes extends BaseRoute {
                     payload: {
                         origin: Joi.number().required(),
                         destination: Joi.number().required(),
-                        value: Joi.number().required,
+                        value: Joi.number().required(),
                     }
                 },
 

@@ -28,7 +28,8 @@ class MongoDB extends ICrud {
     }
     // 3o
     static connect() {
-        Mongoose.connect('mongodb://bankadmin:adminbankpwd@localhost:27017/bank', {
+        //Mongoose.connect('mongodb://bankadmin:adminbankpwd@localhost:27017/bank', {
+        Mongoose.connect('mongodb://bankadmin:bankadmin01@ds349587.mlab.com:49587/heroku_6xn5406g', {
             useNewUrlParser: true
         }, function (error) {
             if (!error) return;
@@ -43,7 +44,7 @@ class MongoDB extends ICrud {
         return this._collection.create(item)
     }
     async read(item = {}) {
-        return this._collection.find(item, { name: 1, balance: 1, account: 1})
+        return this._collection.find(item)
     }
     async update(account, item) {
         return this._collection.updateOne({account}, { $set: item})

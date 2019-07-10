@@ -1,8 +1,10 @@
 const Hapi = require('hapi')
 const Context = require('./src/db/strategies/base/contextStrategy')
 const MongoDB = require('./src/db/strategies/mongodb/mongoDbStrategy')
-const UserSchema = require('./src/db/strategies/mongodb/schemas/userSchema')
 const UserRoutes = require('./src/routes/userRoutes')
+const TransferRoutes = require('./src/routes/transferRoutes')
+const UserSchema = require('./src/db/strategies/mongodb/schemas/userSchema')
+const TransferSchema = require('./src/db/strategies/mongodb/schemas/transferSchema')
 
 const app = new Hapi.Server({
     port: 4000
@@ -12,14 +14,15 @@ function mapRoutes(instance, methods) {
     return methods.map(method => instance[method]())
 }
 
-async function main() {
+module.exports = async function main() {
 
     const connection = MongoDB.connect()
-    const mongoDb = new Context(new MongoDB(connection, UserSchema))
-
+    const mongoDbUser = new Context(new MongoDB(connection, UserSchema))
+    const mongoDbTransfer = new Context(new MongoDB(connection, TransferSchema))
 
     app.route([
-        ...mapRoutes(new UserRoutes(mongoDb), UserRoutes.methods())
+        ...mapRoutes(new UserRoutes(mongoDbUser), UserRoutes.methods()),
+        ...mapRoutes(new TransferRoutes(mongoDbTransfer), TransferRoutes.methods()),
     ])
 
     await app.start()
@@ -49,4 +52,3 @@ async function main() {
     })
     return app;
 }
-module.exports = main()

@@ -36,11 +36,10 @@ let MOCK_USER_ATUALIZAR_ACCOUNT = '';
 let contextUser = {}
 let contextTransfer = {}
 
-describe('MongoDB Suite de testes', function () {
+describe.only('MongoDB Suite de testes', function () {
     this.beforeAll(async () => {
         const connection = MongoDb.connect()
         contextUser = new Context(new MongoDb(connection, UserSchema))
-        contextTransfer = new Context( new MongoDb(connection, TransferSchema))
 
         const result = await contextUser.create(MOCK_USER_ATUALIZAR)
         MOCK_USER_ATUALIZAR_ACCOUNT = result.account
