@@ -10,6 +10,8 @@ class UserRoutes extends BaseRoute {
         return {
             path: '/user',
             method: 'GET',
+            config:{
+            },            
             handler: (request, headers) => {
                 return this.db.read()
             }

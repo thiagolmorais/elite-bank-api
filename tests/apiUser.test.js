@@ -3,6 +3,7 @@ const api = require('./../api')
 let app = {}
 let MOCK_ACCOUNT = ""
 
+
 function cadastrar() {
     return app.inject({
         method: 'POST',
@@ -19,7 +20,8 @@ function cadastrar() {
 
 describe('API User test suite', function ()  {
     this.beforeAll(async () => {
-        app = await api
+        app = await api()
+        
         const result = await cadastrar()
         
         MOCK_ACCOUNT = JSON.parse(result.payload).account
@@ -60,7 +62,7 @@ describe('API User test suite', function ()  {
             method: 'PATCH',
             url: `/user/${MOCK_ACCOUNT}`,
             payload: {
-                balance: 5000,
+                balance: 100,
             }
         })
         assert.deepEqual(result.statusCode, 200) 

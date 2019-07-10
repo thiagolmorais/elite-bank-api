@@ -14,33 +14,31 @@ const Context = require('./../src/db/strategies/base/contextStrategy')
 const MOCK_USER_CADASTRAR = {
     name: 'Warren',
     password: '101010',
-    account: 00001,
+    account: 10001,
     balance: 1000000,
     email: 'joao@email.com'
 };
 
 const MOCK_USER_LISTAR = {
     name: 'Warren',
-    account: 00001,
+    account: 10001,
     balance: 1000000
 };
 
 const MOCK_USER_ATUALIZAR = {
     name: 'Eik',
     password: '202020',
-    account: 00002,
+    account: 10002,
     balance: 5000,
     email: 'email@email.com'
 };
 let MOCK_USER_ATUALIZAR_ACCOUNT = '';
 let contextUser = {}
-let contextTransfer = {}
 
-describe('MongoDB Suite de testes', function () {
+describe.only('MongoDB Suite de testes', function () {
     this.beforeAll(async () => {
         const connection = MongoDb.connect()
         contextUser = new Context(new MongoDb(connection, UserSchema))
-        contextTransfer = new Context( new MongoDb(connection, TransferSchema))
 
         const result = await contextUser.create(MOCK_USER_ATUALIZAR)
         MOCK_USER_ATUALIZAR_ACCOUNT = result.account

@@ -23,10 +23,10 @@ describe('API User test suite', function ()  {
         MOCK_ACCOUNT = JSON.parse(result.payload).account
     })
 
-    it('listar /user', async () => {
+    it('listar /transfer', async () => {
         const result = await app.inject({
             method: 'GET',
-            url: '/user'
+            url: '/transfer'
         })
         const statusCode = result.statusCode 
         
@@ -34,7 +34,7 @@ describe('API User test suite', function ()  {
         assert.ok(Array.isArray(JSON.parse(result.payload)))
     })
 
-    it('cadastrar /user', async () => {
+    it('cadastrar /transfer', async () => {
         const result = await cadastrar()
         assert.deepEqual(result.statusCode, 200)
         assert.deepEqual(JSON.parse(result.payload).name, "Joao")
