@@ -7,7 +7,7 @@ const UserSchema = require('./src/db/strategies/mongodb/schemas/userSchema')
 const TransferSchema = require('./src/db/strategies/mongodb/schemas/transferSchema')
 
 const app = new Hapi.Server({
-    port: 5000
+    port: process.env.PORT || 5000
 })
 
 function mapRoutes(instance, methods) {
