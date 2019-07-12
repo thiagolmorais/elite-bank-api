@@ -12,9 +12,16 @@ class UserRoutes extends BaseRoute {
             method: 'POST',
             config:{
             },            
-            handler: (request, headers) => {
-                const teste = this.db.read({name: request.payload.name});
-                return teste;
+            handler: async (request, headers) => {
+                //console.log(request.payload);
+                const account = await this.db.read({account: request.payload.account});               
+                const passwordFront = JSON.parse(request.payload.password);                
+                const passwordMongo = account[0].password                               
+                const passwordArray = passwordMongo.split('')                
+                let auth = await passwordArray.every((v, k) => {
+                    return passwordFront[k].includes(parseInt(v))
+                })                
+                return auth;
             }
         }
     }
@@ -24,6 +31,10 @@ class UserRoutes extends BaseRoute {
             path: '/user',
             method: 'GET',
             config:{
+                tags:['api'],
+                validate: {
+
+                }
             },            
             handler: (request, headers) => {
                 return this.db.read()
