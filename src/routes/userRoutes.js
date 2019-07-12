@@ -23,7 +23,7 @@ class UserRoutes extends BaseRoute {
             },            
             handler: async (request, headers) => {
                 //console.log(request.payload);
-                const account = await this.userDb.read({account: request.payload.account});               
+                const account = await this.UserDb.read({account: request.payload.account});               
                 const passwordFront = request.payload.password;                
                 const passwordMongo = account[0].password                               
                 const passwordArray = passwordMongo.split('') 
