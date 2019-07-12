@@ -7,7 +7,7 @@ const UserSchema = require('./src/db/strategies/mongodb/schemas/userSchema')
 const TransferSchema = require('./src/db/strategies/mongodb/schemas/transferSchema')
 
 const app = new Hapi.Server({
-    port: 4000
+    port: 5000
 })
 
 function mapRoutes(instance, methods) {
@@ -28,28 +28,28 @@ async function main() {
     await app.start()
     console.log('server running at', app.info.port)
 
-    await app.inject({
-        method: 'POST',
-        url: '/user',
-        payload: {
-            name: 'joao',
-            password: '102030',
-            email: 'joao@email.com',
-            balance: 10000,
-            account: 10001
-        }
-    })
-    await app.inject({
-        method: 'POST',
-        url: '/user',
-        payload: {
-            name: 'jose',
-            password: '102030',
-            email: 'jose@email.com',
-            balance: 10000,
-            account: 10002
-        }
-    })
+    // await app.inject({
+    //     method: 'POST',
+    //     url: '/user',
+    //     payload: {
+    //         name: 'joao',
+    //         password: '102030',
+    //         email: 'joao@email.com',
+    //         balance: 10000,
+    //         account: 10001
+    //     }
+    // })
+    // await app.inject({
+    //     method: 'POST',
+    //     url: '/user',
+    //     payload: {
+    //         name: 'jose',
+    //         password: '102030',
+    //         email: 'jose@email.com',
+    //         balance: 10000,
+    //         account: 10002
+    //     }
+    // })
     return app;
 }
 
