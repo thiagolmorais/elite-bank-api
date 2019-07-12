@@ -14,7 +14,7 @@ function mapRoutes(instance, methods) {
     return methods.map(method => instance[method]())
 }
 
-async function main() {
+module.exports = async function main() {
 
     const connection = MongoDB.connect()
     const mongoDbUser = new Context(new MongoDB(connection, UserSchema))
@@ -22,7 +22,7 @@ async function main() {
     
     app.route([
         ...mapRoutes(new UserRoutes(mongoDbUser), UserRoutes.methods()),
-        ...mapRoutes(new TransferRoutes(mongoDbTransfer), TransferRoutes.methods()),
+        ...mapRoutes(new TransferRoutes(mongoDbTransfer, mongoDbUser), TransferRoutes.methods()),
     ])
 
     await app.start()
@@ -53,4 +53,4 @@ async function main() {
     return app;
 }
 
-main();
+//main();
