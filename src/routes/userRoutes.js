@@ -8,20 +8,43 @@ class UserRoutes extends BaseRoute {
 
    listPassword() {
         return {
-            path: '/user/password',
+            path: '/login',
             method: 'POST',
             config:{
+                validate: {
+                    failAction: (request, h, err) => {
+                        throw err;
+                      },
+                    payload: {
+                        account: Joi.number().required(),
+                        password: Joi.array().required(),
+                    }
+                },
             },            
             handler: async (request, headers) => {
                 //console.log(request.payload);
-                const account = await this.db.read({account: request.payload.account});               
+                const account = await this.userDb.read({account: request.payload.account});               
                 const passwordFront = request.payload.password;                
                 const passwordMongo = account[0].password                               
-                const passwordArray = passwordMongo.split('')                
+                const passwordArray = passwordMongo.split('') 
+                            
                 let auth = await passwordArray.every((v, k) => {
                     return passwordFront[k].includes(parseInt(v))
-                })                
-                return auth;
+                })  
+
+                if(!auth) {
+                    return ({
+                        message: 'Password incorrect!'
+                    })
+                }         
+
+                const userData = {
+                    account: account[0].account,
+                    name: account[0].name,
+                    balance: account[0].balance,
+                    token: 'e0ce3be0-b650-4b4c-ab23-70abd8757058'
+                }
+                return userData;
             }
         }
     }
