@@ -14,7 +14,7 @@ function mapRoutes(instance, methods) {
     return methods.map(method => instance[method]())
 }
 
-module.exports = async function main() {
+async function main() {
 
     const connection = MongoDB.connect()
     const mongoDbUser = new Context(new MongoDB(connection, UserSchema))
@@ -53,4 +53,4 @@ module.exports = async function main() {
     return app;
 }
 
-//main();
+main();
