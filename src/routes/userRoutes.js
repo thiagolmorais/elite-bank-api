@@ -1,5 +1,6 @@
 const BaseRoute = require('./base/baseRoute')
 const Joi = require('joi')
+const uuid = require('uuid/v4')
 class UserRoutes extends BaseRoute {
     constructor(userDb) {
         super()
@@ -34,24 +35,22 @@ class UserRoutes extends BaseRoute {
 
                 if(!auth) {
                     return ({
+                        response: 'false',
                         message: 'Password incorrect!'
                     })
-                }         
-                const userToken = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-                    var r = (d + Math.random() * 16) % 16 | 0;
-                    d = Math.floor(d / 16);
-                    return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-                });
-
-                const d = new Date().getTime();
-                if (typeof performance !== 'undefined' && typeof performance.now === 'function'){
-                    d += performance.now(); //use high-precision timer if available
                 }
-                const token = ( 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-                    const r = (d + Math.random() * 16) % 16 | 0;
-                    d = Math.floor(d / 16);
-                    return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-                }))
+
+                // if (account[0].userToken == ''){
+                //     console.log('ok')
+                // }
+
+
+                
+                // const diff = (account[0].insertedAt - Date.now())/(1000 * 60)
+
+                // console.log('diff', diff)
+
+                const userToken = uuid()
 
                 const userData = {
                     account: account[0].account,
