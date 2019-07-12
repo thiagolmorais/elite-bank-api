@@ -11,6 +11,9 @@ class IDb {
   read(item) {
     throw new NotImplementedException();
   }
+  readBalance(item) {
+    throw new NotImplementedException();
+  }
   update(id, item) {
     throw new NotImplementedException();
   }

@@ -1,9 +1,10 @@
 const BaseRoute = require('./base/baseRoute')
 const Joi = require('joi')
 class TransferRoutes extends BaseRoute {
-    constructor(db) {
+    constructor(transferDB, UserDB) {
         super()
-        this.db = db
+        this.TransferDB = transferDB
+        this.UserDB = UserDB
     }
 
     list() {
@@ -14,7 +15,7 @@ class TransferRoutes extends BaseRoute {
                 
             },
             handler: (request, headers) => {
-                return this.db.read()
+                return this.TransferDB.read()
             }
         }
     }
@@ -37,8 +38,23 @@ class TransferRoutes extends BaseRoute {
 
             },
             handler: (request, headers) => {
+                const accountOrigin = this.UserDB.read({account: request.payload.origin})
+                if(!accountOrigin){
+                    return ({ response: 'Account not found'})
+                }
+                const accountDestination = this.UserDB.read({account: request.payload.destination})
+                if(!accountDestination){
+
+                    return ({response: 'Account not found'})
+                }
+
+                let originBalance = accountOrigin.balance - request.payload.value
+                let destinationBalance = accountDestination.balance + request.payload.value
+                this.UserDB.update({account: request.payload.origin}, {balance: originBalance}) 
+                this.UserDB.update({account: request.payload.destination}, {balance: destinationBalance})
+
                 const payload = request.payload
-                return this.db.create(payload)
+                return this.TransferDB.create(payload)
             }
         }
     }

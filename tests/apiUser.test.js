@@ -24,58 +24,60 @@ describe('API User test suite', function ()  {
         
         const result = await cadastrar()
         
-        MOCK_ACCOUNT = JSON.parse(result.payload).account
+        // MOCK_ACCOUNT = JSON.parse(result.payload).account
     })
 
-    it('listar /user', async () => {
-        const result = await app.inject({
-            method: 'GET',
-            url: '/user'
-        })
-        const statusCode = result.statusCode 
+    // it('listar /user', async () => {
+    //     const result = await app.inject({
+    //         method: 'GET',
+    //         url: '/user'
+    //     })
+    //     const statusCode = result.statusCode 
         
-        assert.deepEqual(statusCode, 200)
-        assert.ok(Array.isArray(JSON.parse(result.payload)))
-    })
+    //     assert.deepEqual(statusCode, 200)
+    //     assert.ok(Array.isArray(JSON.parse(result.payload)))
+    // })
 
-    it('cadastrar /user', async () => {
-        const result = await cadastrar()
-        assert.deepEqual(result.statusCode, 200)
-        assert.deepEqual(JSON.parse(result.payload).name, "Joao")
+    // it('cadastrar /user', async () => {
+    //     const result = await cadastrar()
+    //     assert.deepEqual(result.statusCode, 200)
+    //     assert.deepEqual(JSON.parse(result.payload).name, "Joao")
 
-    })
+    // })
 
-    it('não deve cadastrar com payload errado', async () => {
-        const result = await app.inject({
-            method: 'POST',
-            url: '/user',
-            payload: {
-                NOME: 'Jose'
-            }
-        })
-        const payload = JSON.parse(result.payload)
-        assert.deepEqual(result.statusCode, 400)
-        assert.ok(payload.message.search('"name" is required') !== -1)
-    })
-    it('atualizar /user/{account}', async () => {
-        const result = await app.inject({
-            method: 'PATCH',
-            url: `/user/${MOCK_ACCOUNT}`,
-            payload: {
-                balance: 100,
-            }
-        })
-        assert.deepEqual(result.statusCode, 200) 
-        assert.deepEqual(JSON.parse(result.payload).nModified, 1)
-
-    })
-    // it('remover /herois/{id}', async () => {
-    //     const result =  await app.inject({
-    //         method: 'DELETE',
-    //         url: `/herois/${MOCK_ID}` 
+    // it('não deve cadastrar com payload errado', async () => {
+    //     const result = await app.inject({
+    //         method: 'POST',
+    //         url: '/user',
+    //         payload: {
+    //             NOME: 'Jose'
+    //         }
+    //     })
+    //     const payload = JSON.parse(result.payload)
+    //     assert.deepEqual(result.statusCode, 400)
+    //     assert.ok(payload.message.search('"name" is required') !== -1)
+    // })
+    // it('atualizar /user/{account}', async () => {
+    //     const result = await app.inject({
+    //         method: 'PATCH',
+    //         url: `/user/${MOCK_ACCOUNT}`,
+    //         payload: {
+    //             balance: 100000,
+    //         }
     //     })
     //     assert.deepEqual(result.statusCode, 200) 
-    //     assert.deepEqual(JSON.parse(result.payload).n, 1)
+    //     assert.deepEqual(JSON.parse(result.payload).nModified, 1)
+
     // })
+    it('recuperar saldo /balance/{account}', async () => {
+        const result = await app.inject({
+            method: 'GET',
+            url: `/balance/10001`,
+        })
+        console.log(result.payload)
+        assert.deepEqual(result.statusCode, 200) 
+        assert.deepEqual(JSON.parse(result.payload)[0].balance, 10000)
+
+    })
 })
 

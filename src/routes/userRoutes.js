@@ -1,9 +1,9 @@
 const BaseRoute = require('./base/baseRoute')
 const Joi = require('joi')
 class UserRoutes extends BaseRoute {
-    constructor(db) {
+    constructor(userDb) {
         super()
-        this.db = db
+        this.UserDb = userDb
     }
 
     list() {
@@ -13,7 +13,8 @@ class UserRoutes extends BaseRoute {
             config:{
             },            
             handler: (request, headers) => {
-                return this.db.read()
+
+                return this.UserDb.read()
             }
         }
     }
@@ -38,8 +39,28 @@ class UserRoutes extends BaseRoute {
 
             },
             handler: (request, headers) => {
+                //inserir aqui regras de inserção;
                 const payload = request.payload
-                return this.db.create(payload)
+                return this.UserDb.create(payload)
+            }
+        }
+    }
+    balance() {
+        return {
+            path: '/balance/{account}',
+            method: 'GET',
+            config: {
+                validate: {
+                    failAction: (request, h, err) => {
+                        throw err;
+                      },
+                    params: {
+                        account: Joi.string().required()
+                    }
+                },
+            },            
+            handler: (request, headers) => {
+                return this.UserDb.readBalance({account: request.params.account},1)
             }
         }
     }
@@ -56,7 +77,7 @@ class UserRoutes extends BaseRoute {
                         balance: Joi.number(),
                     },
                     params: {
-                        account: Joi.string().min(5).max(5).required()
+                        account: Joi.string().required()
                     }
                 },
 
@@ -64,31 +85,10 @@ class UserRoutes extends BaseRoute {
             handler: (request, headers) => {
                 const payload = request.payload;
                 const account = request.params.account;
-                return this.db.update(account, payload)
+                return this.UserDb.update(account, payload)
             }
         }
     }
-    // delete() {
-    //     return {
-    //         path: '/user/{id}',
-    //         method: 'DELETE',
-    //         config: {
-    //             validate: {
-    //                 failAction: (request, h, err) => {
-    //                     throw err;
-    //                 },
-    //                 params: {
-    //                     id: Joi.string().required()
-    //                 }
-    //             }
-    //         },
-    //         handler: (request, headers) => {
-    //             const id = request.params.id;
-    //             return this.db.delete(id)
-    //         }
-    //     }
-    // }
-
 }
 
 module.exports = UserRoutes

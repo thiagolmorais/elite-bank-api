@@ -43,7 +43,7 @@ describe.only('MongoDB Suite de testes', function () {
         const result = await contextUser.create(MOCK_USER_ATUALIZAR)
         MOCK_USER_ATUALIZAR_ACCOUNT = result.account
     })
-    it('verificar conexao', async () => {
+     it('verificar conexao', async () => {
         const result = await contextUser.isConnected()
         const expected = 'Conectado'
 
@@ -62,14 +62,22 @@ describe.only('MongoDB Suite de testes', function () {
         }
         assert.deepEqual(result, MOCK_USER_LISTAR)
     })
-    it('atualizar', async () => {
-        const result = await contextUser.update(MOCK_USER_ATUALIZAR_ACCOUNT, {
-            balance: '5555'
-        })
-        assert.deepEqual(result.nModified, 1)
-    })
-    it('remover', async () => {
-        const result = await contextUser.delete(MOCK_USER_ATUALIZAR_ACCOUNT)
-        assert.deepEqual(result.n, 1)
-    })
+    // it('atualizar', async () => {
+    //     const result = await contextUser.update(MOCK_USER_ATUALIZAR_ACCOUNT, {
+    //         balance: '5555'
+    //     })
+    //     assert.deepEqual(result.nModified, 1)
+    // })
+    // it('remover', async () => {
+    //     const result = await contextUser.delete(MOCK_USER_ATUALIZAR_ACCOUNT)
+    //     assert.deepEqual(result.n, 1)
+    // })
+    // it('listar conm filtro', async () => {
+    //     const [{ name, balance, account}] = await contextUser.read({ name: MOCK_USER_CADASTRAR.name})
+    //     const result = {
+    //         name, balance, account
+    //     }
+    //     console.log(result)
+    //     assert.deepEqual(result, MOCK_USER_LISTAR)
+    // })
 })

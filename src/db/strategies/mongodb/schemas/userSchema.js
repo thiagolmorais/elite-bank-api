@@ -10,7 +10,8 @@ const userSchema = new Mongoose.Schema({
     },
     account: {
         type: Number,
-        required: true
+        required: true,
+        unique: true
     },
     balance: {
         type: Number,
