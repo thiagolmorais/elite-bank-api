@@ -37,24 +37,43 @@ class TransferRoutes extends BaseRoute {
                 },
 
             },
-            handler: (request, headers) => {
-                const accountOrigin = this.UserDB.read({account: request.payload.origin})
+            handler: async (request, headers) => {
+                const accountOrigin = await this.UserDB.read({account: request.payload.origin})
+                
                 if(!accountOrigin){
-                    return ({ response: 'Account not found'})
+                    return ({ 
+                        response: 'false',
+                        message: 'Conta de origem não encontrada'
+                    })
                 }
-                const accountDestination = this.UserDB.read({account: request.payload.destination})
+                const accountDestination = await this.UserDB.read({account: request.payload.destination})
+                
                 if(!accountDestination){
 
-                    return ({response: 'Account not found'})
+                    return ({
+                        response: 'false',
+                        message: 'Conta de destino não encontrada'
+                    })
                 }
 
-                let originBalance = accountOrigin.balance - request.payload.value
-                let destinationBalance = accountDestination.balance + request.payload.value
-                this.UserDB.update({account: request.payload.origin}, {balance: originBalance}) 
-                this.UserDB.update({account: request.payload.destination}, {balance: destinationBalance})
+                let originBalance = parseInt(accountOrigin[0].balance) - parseInt(request.payload.value)                
+                let destinationBalance = parseInt(accountDestination[0].balance) + parseInt(request.payload.value)
+                
+                await this.UserDB.update(request.payload.origin, {balance: originBalance.toString()})
+                
+                await this.UserDB.update(request.payload.destination, {balance: destinationBalance.toString()})
 
                 const payload = request.payload
-                return this.TransferDB.create(payload)
+                payload.preOriginBalance = accountOrigin[0].balance
+                payload.preDestinationBalance = accountDestination[0].balance
+                
+                await this.TransferDB.create(payload)
+
+                return ({
+                    response: 'true',
+                    message: 'Transferência realizada com sucesso'
+                })
+                
             }
         }
     }
