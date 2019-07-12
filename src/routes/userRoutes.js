@@ -6,6 +6,19 @@ class UserRoutes extends BaseRoute {
         this.db = db
     }
 
+   listPassword() {
+        return {
+            path: '/user/password',
+            method: 'POST',
+            config:{
+            },            
+            handler: (request, headers) => {
+                const teste = this.db.read({name: request.payload.name});
+                return teste;
+            }
+        }
+    }
+
     list() {
         return {
             path: '/user',
