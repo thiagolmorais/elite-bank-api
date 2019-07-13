@@ -33,26 +33,58 @@ class TransferRoutes extends BaseRoute {
                         origin: Joi.number().required(),
                         destination: Joi.number().required(),
                         value: Joi.number().required(),
+                        password: Joi.array().required(),
+                        userToken: Joi.string().required(),
                     }
                 },
 
             },
             handler: async (request, headers) => {
                 const accountOrigin = await this.UserDB.read({account: request.payload.origin})
-                
-                if(!accountOrigin){
+
+                if(accountOrigin.length == 0){
                     return ({ 
-                        response: 'false',
+                        response: false,
                         message: 'Conta de origem não encontrada'
                     })
                 }
+
                 const accountDestination = await this.UserDB.read({account: request.payload.destination})
                 
-                if(!accountDestination){
+                if(accountDestination.length == 0){
 
                     return ({
-                        response: 'false',
+                        response: false,
                         message: 'Conta de destino não encontrada'
+                    })
+                }
+
+                const passwordFront = request.payload.password;                
+                const passwordMongo = accountOrigin[0].password                               
+                const passwordArray = passwordMongo.split('') 
+                            
+                let auth = await passwordArray.every((v, k) => {
+                    return passwordFront[k].includes(parseInt(v))
+                })  
+
+                if(!auth) {
+                    return ({
+                        response: false,
+                        message: 'Senha incorreta!'
+                    })
+                }
+
+                if(request.payload.userToken != accountOrigin[0].usertoken) {
+                    return ({
+                        response: false,
+                        message: 'Token incorreto!'
+                    })
+                }
+
+                if (request.payload.value > accountOrigin[0].balance) {
+                    return ({
+                        response: false,
+                        message: 'Saldo Insuficiente'
                     })
                 }
 
@@ -70,7 +102,7 @@ class TransferRoutes extends BaseRoute {
                 await this.TransferDB.create(payload)
 
                 return ({
-                    response: 'true',
+                    response: true,
                     message: 'Transferência realizada com sucesso'
                 })
                 
