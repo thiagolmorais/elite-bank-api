@@ -1,5 +1,6 @@
 const BaseRoute = require('./base/baseRoute')
 const Joi = require('joi')
+const Boom = require('boom')
 class UserRoutes extends BaseRoute {
     constructor(db) {
         super()
@@ -11,17 +12,32 @@ class UserRoutes extends BaseRoute {
             path: '/user/password',
             method: 'POST',
             config:{
+                tags: ['api'],
+                description: 'Login',
+                notes: 'Retorna verdadeiro se os dados estiverem corretos',
+                validate:{
+                    failAction: (r, h, erro) => {
+                        throw erro
+                    },
+                    payload: {
+                        account: Joi.number(),
+                        password: Joi.array()                        
+                    }                    
+                }
             },            
             handler: async (request, headers) => {
-                //console.log(request.payload);
-                const account = await this.db.read({account: request.payload.account});               
-                const passwordFront = request.payload.password;                
-                const passwordMongo = account[0].password                               
-                const passwordArray = passwordMongo.split('')                
-                let auth = await passwordArray.every((v, k) => {
-                    return passwordFront[k].includes(parseInt(v))
-                })                
-                return auth;
+                try {                
+                    const account = await this.db.read({account: request.payload.account});               
+                    const passwordFront = request.payload.password;                
+                    const passwordMongo = account[0].password                               
+                    const passwordArray = passwordMongo.split('')                
+                    let auth = await passwordArray.every((v, k) => {
+                        return passwordFront[k].includes(parseInt(v))
+                    })                
+                    return auth;
+                } catch(error) {
+                    return Boom.internal();
+                }              
             }
         }
     }
@@ -31,13 +47,19 @@ class UserRoutes extends BaseRoute {
             path: '/user',
             method: 'GET',
             config:{
-                tags:['api'],
+                tags: ['api'],
+                description: 'Listar usuários',
+                notes: 'Pode filtar por nome e paginar',
                 validate: {
 
                 }
             },            
             handler: (request, headers) => {
-                return this.db.read()
+                try { 
+                    return this.db.read() 
+                } catch(error) {
+                    return Boom.internal();
+                }               
             }
         }
     }
@@ -46,7 +68,9 @@ class UserRoutes extends BaseRoute {
             path: '/user',
             method: 'POST',
             config: {
-
+                tags: ['api'],
+                description: 'Cria usuários',
+                notes: 'Serve para criar usuário',
                 validate: {
                     failAction: (request, h, err) => {
                         throw err;
@@ -62,8 +86,12 @@ class UserRoutes extends BaseRoute {
 
             },
             handler: (request, headers) => {
-                const payload = request.payload
-                return this.db.create(payload)
+                try {
+                    const payload = request.payload
+                    return this.db.create(payload)
+                } catch(error) {
+                    return Boom.internal();
+                }
             }
         }
     }
@@ -72,6 +100,9 @@ class UserRoutes extends BaseRoute {
             path: '/user/{account}',
             method: 'PATCH',
             config: {
+                tags: ['api'],
+                description: 'Altera usuários',
+                notes: 'Serve para alterar as informações do usuário',
                 validate: {
                     failAction: (request, h, err) => {
                         throw err;
@@ -86,9 +117,13 @@ class UserRoutes extends BaseRoute {
 
             },
             handler: (request, headers) => {
-                const payload = request.payload;
-                const account = request.params.account;
-                return this.db.update(account, payload)
+                try {
+                    const payload = request.payload;
+                    const account = request.params.account;                
+                    return this.db.update(account, payload)
+                } catch(error) {
+                    return Boom.internal();
+                }
             }
         }
     }

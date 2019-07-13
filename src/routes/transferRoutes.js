@@ -11,10 +11,16 @@ class TransferRoutes extends BaseRoute {
             path: '/transfer',
             method: 'GET',
             config:{
-                
+                tags: ['api'],
+                description: 'Lista as transferências',
+                notes: 'Serve para listar as transferências',                
             },
             handler: (request, headers) => {
-                return this.db.read()
+                try {
+                    return this.db.read()
+                } catch(error){
+                    return Boom.internal();
+                }
             }
         }
     }
@@ -23,7 +29,9 @@ class TransferRoutes extends BaseRoute {
             path: '/transfer',
             method: 'POST',
             config: {
-
+                tags: ['api'],
+                description: 'Cria ...',
+                notes: 'Serve para criar ...',
                 validate: {
                     failAction: (request, h, err) => {
                         throw err;
@@ -37,8 +45,12 @@ class TransferRoutes extends BaseRoute {
 
             },
             handler: (request, headers) => {
-                const payload = request.payload
-                return this.db.create(payload)
+                try {
+                    const payload = request.payload
+                    return this.db.create(payload)
+                } catch(error){
+                    return Boom.internal();
+                }
             }
         }
     }
