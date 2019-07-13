@@ -20,11 +20,20 @@ const userSchema = new Mongoose.Schema({
     email: {
         type: String,
         required: true
-    },    
+    },
+    usertoken: {
+        type: String,
+        required: false
+    },
+    tokentime:{
+        type:Date,
+        required: false
+    },
     insertedAt: {
         type: Date,
         default: new Date()
     }
+
 })
 
 //mocha workaround
