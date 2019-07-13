@@ -168,9 +168,16 @@ class UserRoutes extends BaseRoute {
                 const diff = Math.abs((account[0].tokentime - Date.now())/(1000 * 60))
                 if(diff < 15) {
                     await this.UserDb.update(account[0].account, {tokentime: Date.now()})
+                    const userData = {
+                        account: account[0].account,
+                        name: account[0].name,
+                        balance: account[0].balance,
+                        userToken: account[0].usertoken
+                    }
+
                     return {
                         response: true,
-                        message: 'Sessão válida!'
+                        message: userData
                     }
                 }
 
