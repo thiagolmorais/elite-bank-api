@@ -16,9 +16,6 @@ class ContextStrategy extends IDb {
   read(item, limit = 1000) {
     return this._database.read(item, limit);
   }
-  readBalance(item, limit = 1000) {
-    return this._database.read(item, limit);
-  }
   update(id, item) {
     return this._database.update(id, item);
   }

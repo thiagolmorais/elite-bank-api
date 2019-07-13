@@ -18,7 +18,7 @@ function cadastrar() {
     });
 }
 
-describe.only('API Transfer test suite', function ()  {
+describe('API Transfer test suite', function ()  {
     this.timeout(100000)
     this.beforeAll(async () => {
         app = await api()

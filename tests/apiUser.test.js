@@ -28,7 +28,7 @@ let MOCK_USER_LISTAR_TOKEN = ''
 let MOCK_USER_LISTAR_ACCOUNT = MOCK_USER_LISTAR.account
 
 
-describe('API User test suite', function ()  {
+describe.only('API User test suite', function ()  {
     this.timeout(10000);
     this.beforeAll(async () => {
         app = await api()
@@ -85,16 +85,16 @@ describe('API User test suite', function ()  {
     //     assert.deepEqual(JSON.parse(result.payload).nModified, 1)
 
     // })
-    // it('recuperar saldo /balance/{account}', async () => {
-    //     const result = await app.inject({
-    //         method: 'GET',
-    //         url: `/balance/10001`,
-    //     })
-    //     console.log(result.payload)
-    //     assert.deepEqual(result.statusCode, 200) 
-    //     assert.deepEqual(JSON.parse(result.payload)[0].balance, 10000)
+    it('recuperar saldo /balance/{account}', async () => {
+        const result = await app.inject({
+            method: 'GET',
+            url: `/balance/100002`,
+        })
+        console.log(JSON.parse(result.payload).message)
+        assert.deepEqual(result.statusCode, 200) 
+        assert.deepEqual(JSON.parse(result.payload).message, 4423)
 
-    // })
+    })
     // it('recuperar dados /account/{account}', async () => {
     //     const result = await app.inject({
     //         method: 'GET',
@@ -104,19 +104,19 @@ describe('API User test suite', function ()  {
     //     assert.deepEqual(result.statusCode, 200) 
 
     // })
-    it('login ou sessão já ativa /login', async () => {
-        const result = await app.inject({
-            method: 'POST',
-            url: '/login',
-            payload: {
-                account: 100002,
-                password: [[4,2],[5,0],[4,2],[5,0],[4,2],[5,0]]
-            }
-        })
+    // it('login ou sessão já ativa /login', async () => {
+    //     const result = await app.inject({
+    //         method: 'POST',
+    //         url: '/login',
+    //         payload: {
+    //             account: 100002,
+    //             password: [[4,2],[5,0],[4,2],[5,0],[4,2],[5,0]]
+    //         }
+    //     })
         
-        assert.deepEqual(result.statusCode, 200)   
-        assert.deepEqual(JSON.parse(result.payload).response, false)     
-    })
+    //     assert.deepEqual(result.statusCode, 200)   
+    //     assert.deepEqual(JSON.parse(result.payload).response, false)     
+    // })
     // it('usuario incorreto /login', async () => {
     //     const result = await app.inject({
     //         method: 'POST',
@@ -141,19 +141,19 @@ describe('API User test suite', function ()  {
     //     assert.deepEqual(result.statusCode, 200) 
     //     assert.deepEqual(JSON.parse(result.payload).response, false)        
     // })
-    it('sessão valida /checktoken', async () => {
-        const result = await app.inject({
-            method: 'POST',
-            url: '/checktoken',
-            payload: {
-                account: MOCK_USER_LISTAR_ACCOUNT,
-                token: MOCK_USER_LISTAR_TOKEN
-            }
-        })
-        console.log(result.payload)
-        assert.deepEqual(result.statusCode, 200)   
-        assert.deepEqual(JSON.parse(result.payload).response, true)     
-    })
+    // it('sessão valida /checktoken', async () => {
+    //     const result = await app.inject({
+    //         method: 'POST',
+    //         url: '/checktoken',
+    //         payload: {
+    //             account: MOCK_USER_LISTAR_ACCOUNT,
+    //             token: MOCK_USER_LISTAR_TOKEN
+    //         }
+    //     })
+    //     console.log(result.payload)
+    //     assert.deepEqual(result.statusCode, 200)   
+    //     assert.deepEqual(JSON.parse(result.payload).response, true)     
+    // })
     // it('sessão invalida user incorreto /checktoken', async () => {
     //     const result = await app.inject({
     //         method: 'POST',

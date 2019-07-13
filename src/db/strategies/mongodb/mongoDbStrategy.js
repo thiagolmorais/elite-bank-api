@@ -46,9 +46,6 @@ class MongoDB extends ICrud {
     async read(item = {}, limit = 1000) {
         return this._collection.find(item).limit(limit)
     }
-    async readBalance(item = {}, limit = 1000) {
-        return this._collection.find(item,{_id: 0, balance:1}).limit(limit)
-    }
     async update(account, item) {
         return this._collection.updateOne({account}, { $set: item})
     }    

@@ -269,8 +269,22 @@ class UserRoutes extends BaseRoute {
                     }
                 },
             },            
-            handler: (request, headers) => {
-                return this.UserDb.readBalance({account: request.params.account},1)
+            handler: async (request, headers) => {
+                const account = await this.UserDb.read({account: request.params.account},1)
+
+                if(account.length == 0)
+                {
+                    return {
+                        response: false,
+                        message: 'Conta não encontrada!'
+                    }
+                }
+
+                const balance = account[0].balance
+                return {
+                    response: true,
+                    message: balance
+                }
             }
         }
     }
