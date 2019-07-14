@@ -1,7 +1,28 @@
-## Instalando docker para usar o MongoDB
+# Bem vindo ao Elite-bank
+
+## Sobre o Elite-bank
+
+## Integrantes
+
+- Antônio Simões
+- Gustavo Ferreira
+- Ivonaldo Soares
+- Luiz Gustavo
+- Stenio Aguiar
+- Thiago Morais
+
+## Informações adicionais
+
+### Framework utilizados
+
+mongo  | v4.0.10
+node   | v10.16.0
+docker | v18.09.2
+
+### Instalando docker para usar o MongoDB
 
 ```shell
-## ---- MONGODB
+### ---- MONGODB
 docker run \
     --name mongodb \
     -p 27017:27017 \
