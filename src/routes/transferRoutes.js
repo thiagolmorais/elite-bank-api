@@ -109,6 +109,28 @@ class TransferRoutes extends BaseRoute {
             }
         }
     }
+    userdata() {
+        return {
+            path: '/accounts/{account}/transfers',
+            method: 'GET',
+            config: {
+                validate: {
+                    failAction: (request, h, err) => {
+                        throw err;
+                    },
+                    params: {
+                        account: Joi.string().required()
+                    }
+                },
+            },            
+            handler: async (request, headers) => {
+                 let destination = await this.TransferDB.read( { destination: parseInt(request.params.account) })
+                 let origin = await this.TransferDB.read( { origin: parseInt(request.params.account) })
+                 let transfers = origin.concat(destination)
+                 return transfers.sort()
+            }
+        }
+    }
 
 }
 
