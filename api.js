@@ -18,7 +18,7 @@ function mapRoutes(instance, methods) {
     return methods.map(method => instance[method]())
 }
 
-async function main() {
+module.exports = (async function main() {
 
     const connection = MongoDB.connect()
     const mongoDbUser = new Context(new MongoDB(connection, UserSchema))
@@ -26,7 +26,7 @@ async function main() {
     
     app.route([
         ...mapRoutes(new UserRoutes(mongoDbUser), UserRoutes.methods()),
-        ...mapRoutes(new TransferRoutes(mongoDbTransfer), TransferRoutes.methods()),
+        ...mapRoutes(new TransferRoutes(mongoDbTransfer, mongoDbUser), TransferRoutes.methods()),
     ])
 
     const swaggerOptions = {
@@ -47,30 +47,8 @@ async function main() {
 
     await app.start()
     console.log('server running at', app.info.port)
-
-    // await app.inject({
-    //     method: 'POST',
-    //     url: '/user',
-    //     payload: {
-    //         name: 'joao',
-    //         password: '102030',
-    //         email: 'joao@email.com',
-    //         balance: 10000,
-    //         account: 10001
-    //     }
-    // })
-    // await app.inject({
-    //     method: 'POST',
-    //     url: '/user',
-    //     payload: {
-    //         name: 'jose',
-    //         password: '102030',
-    //         email: 'jose@email.com',
-    //         balance: 10000,
-    //         account: 10002
-    //     }
-    // })
+    
     return app;
-}
+})()
 
-main();
+//main();
