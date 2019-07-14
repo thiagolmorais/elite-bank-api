@@ -254,41 +254,7 @@ class UserRoutes extends BaseRoute {
             }
         }
     }
-
-    balance() {
-        return {
-            path: '/balance/{account}',
-            method: 'GET',
-            config: {
-                validate: {
-                    failAction: (request, h, err) => {
-                        throw err;
-                      },
-                    params: {
-                        account: Joi.string().required()
-                    }
-                },
-            },            
-            handler: async (request, headers) => {
-                const account = await this.UserDb.read({account: request.params.account},1)
-
-                if(account.length == 0)
-                {
-                    return {
-                        response: false,
-                        message: 'Conta não encontrada!'
-                    }
-                }
-
-                const balance = account[0].balance
-                return {
-                    response: true,
-                    message: balance
-                }
-            }
-        }
-    }
-
+    
     userdata() {
         return {
             path: '/accounts/{account}',

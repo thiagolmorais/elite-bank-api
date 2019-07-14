@@ -59,6 +59,12 @@ class TransferRoutes extends BaseRoute {
                     })
                 }
 
+                if (request.payload.origin == request.payload.destination) {
+                    return ({
+                        response: false,
+                        message: 'Contas devem ser diferentes'
+                    })
+                }
                 const passwordFront = request.payload.password;                
                 const passwordMongo = accountOrigin[0].password                               
                 const passwordArray = passwordMongo.split('') 
@@ -78,6 +84,14 @@ class TransferRoutes extends BaseRoute {
                     return ({
                         response: false,
                         message: 'Token incorreto!'
+                    })
+                }
+
+                const diff = Math.abs((account[0].tokentime - Date.now())/(1000 * 60))
+                if(diff > 15) {
+                    return ({
+                        response: false,
+                        message: 'Sessão expirada!'
                     })
                 }
 
@@ -111,27 +125,77 @@ class TransferRoutes extends BaseRoute {
     }
     userdata() {
         return {
-            path: '/accounts/{account}/transfers',
+            path: '/accounts/{account}/transfers/{userToken}',
             method: 'GET',
             config: {
                 validate: {
-                    failAction: (request, h, err) => {
+                    failAction: (request, headers, err) => {
                         throw err;
                     },
                     params: {
-                        account: Joi.string().required()
-                    }
+                        account: Joi.string().required(),
+                        userToken: Joi.string().required()
+                    },
                 },
             },            
             handler: async (request, headers) => {
-                 let destination = await this.TransferDB.read( { destination: parseInt(request.params.account) })
-                 let origin = await this.TransferDB.read( { origin: parseInt(request.params.account) })
-                 let transfers = origin.concat(destination)
-                 return transfers.sort()
+                const user = await this.UserDB.read({account: request.params.account})
+
+                if(user.length == 0){
+                    return {
+                        response: false,
+                        message: 'Conta não encontada!'
+                    }
+                }
+
+                if (request.params.userToken !== user[0].usertoken) {
+                    return {
+                        response: false,
+                        message: 'Token incorreto'
+                    }
+                }
+
+                const diff = Math.abs((user[0].tokentime - Date.now())/(1000 * 60))
+                if(diff > 15) {
+                    return ({
+                        response: false,
+                        message: 'Sessão expirada!'
+                    })
+                }
+
+                let destination = await this.TransferDB.read( { destination: parseInt(request.params.account) })
+                let origin = await this.TransferDB.read( { origin: parseInt(request.params.account) })
+                let transfers = origin.concat(destination)
+
+                if (transfers.length == 0) {
+                    return {
+                        response: false,
+                        message: "Não existem transferências relacionadas à essa conta!"
+                    }
+                }
+
+                transfers.sort()
+
+                const pack = transfers.map(transfer => {
+                    const pack = {
+                        insertedAt : transfer.insertedAt,
+                        origin : transfer.origin,
+                        destination: transfer.destination,
+                        value: transfer.value,
+                        preOriginBalance: transfer.preOriginBalance,
+                        preDestinationBalance: transfer.preDestinationBalance
+                    } 
+
+                    return pack
+                 })
+
+                return {
+                    response: true,
+                    message: pack
+                }
             }
         }
     }
-
 }
 
 module.exports = TransferRoutes
