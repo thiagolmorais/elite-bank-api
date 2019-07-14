@@ -18,7 +18,7 @@ function cadastrar() {
     });
 }
 
-describe('API Transfer test suite', function ()  {
+describe.only('API Transfer test suite', function ()  {
     this.timeout(100000)
     this.beforeAll(async () => {
         app = await api()
@@ -38,9 +38,19 @@ describe('API Transfer test suite', function ()  {
     //     assert.ok(Array.isArray(JSON.parse(result.payload)))
     // })
 
-    it('cadastrar /transfer', async () => {
-        const result = await cadastrar()
-        console.log(result.payload)
+    // it('cadastrar /transfer', async () => {
+    //     const result = await cadastrar()
+    //     console.log(result.payload)
+    //     assert.deepEqual(result.statusCode, 200)
+    //     // assert.deepEqual(JSON.parse(result.payload).name, "Joao")
+
+    //  })
+
+     it('recebe transferencias /accounts/{account}/transfers', async () => {
+        const result = await app.inject({
+                    method: 'GET',
+                    url: '/accounts/100002/transfers/b34d1bde-a92f-403d-9dd8-2e1e74f9f865'
+                })
         assert.deepEqual(result.statusCode, 200)
         // assert.deepEqual(JSON.parse(result.payload).name, "Joao")
 

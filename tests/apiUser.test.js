@@ -28,7 +28,7 @@ let MOCK_USER_LISTAR_TOKEN = ''
 let MOCK_USER_LISTAR_ACCOUNT = MOCK_USER_LISTAR.account
 
 
-describe.only('API User test suite', function ()  {
+describe('API User test suite', function ()  {
     this.timeout(10000);
     this.beforeAll(async () => {
         app = await api()
@@ -43,16 +43,16 @@ describe.only('API User test suite', function ()  {
         // MOCK_ACCOUNT = JSON.parse(result.payload).account
     })
 
-    // it('listar /user', async () => {
-    //     const result = await app.inject({
-    //         method: 'GET',
-    //         url: '/user'
-    //     })
-    //     const statusCode = result.statusCode 
-    //     console.log(result.payload)
-    //     assert.deepEqual(statusCode, 200)
-    //     assert.ok(Array.isArray(JSON.parse(result.payload)))
-    // })
+    it('listar /user', async () => {
+        const result = await app.inject({
+            method: 'GET',
+            url: '/user'
+        })
+        const statusCode = result.statusCode 
+        console.log(result.payload)
+        assert.deepEqual(statusCode, 200)
+        assert.ok(Array.isArray(JSON.parse(result.payload)))
+    })
 
     // it('cadastrar /user', async () => {
     //     const result = await cadastrar()
@@ -61,40 +61,19 @@ describe.only('API User test suite', function ()  {
 
     // })
 
-    // it('não deve cadastrar com payload errado', async () => {
-    //     const result = await app.inject({
-    //         method: 'POST',
-    //         url: '/user',
-    //         payload: {
-    //             NOME: 'Jose'
-    //         }
-    //     })
-    //     const payload = JSON.parse(result.payload)
-    //     assert.deepEqual(result.statusCode, 400)
-    //     assert.ok(payload.message.search('"name" is required') !== -1)
-    // })
-    // it('atualizar /user/{account}', async () => {
-    //     const result = await app.inject({
-    //         method: 'PATCH',
-    //         url: `/user/100001`,
-    //         payload: {
-    //             account: 100001,
-    //         }
-    //     })
-    //     assert.deepEqual(result.statusCode, 200) 
-    //     assert.deepEqual(JSON.parse(result.payload).nModified, 1)
-
-    // })
-    it('recuperar saldo /balance/{account}', async () => {
+    it('não deve cadastrar com payload errado', async () => {
         const result = await app.inject({
-            method: 'GET',
-            url: `/balance/100002`,
+            method: 'POST',
+            url: '/user',
+            payload: {
+                NOME: 'Jose'
+            }
         })
-        console.log(JSON.parse(result.payload).message)
-        assert.deepEqual(result.statusCode, 200) 
-        assert.deepEqual(JSON.parse(result.payload).message, 4423)
-
+        const payload = JSON.parse(result.payload)
+        assert.deepEqual(result.statusCode, 400)
+        assert.ok(payload.message.search('"name" is required') !== -1)
     })
+    
     // it('recuperar dados /account/{account}', async () => {
     //     const result = await app.inject({
     //         method: 'GET',
@@ -104,19 +83,19 @@ describe.only('API User test suite', function ()  {
     //     assert.deepEqual(result.statusCode, 200) 
 
     // })
-    // it('login ou sessão já ativa /login', async () => {
-    //     const result = await app.inject({
-    //         method: 'POST',
-    //         url: '/login',
-    //         payload: {
-    //             account: 100002,
-    //             password: [[4,2],[5,0],[4,2],[5,0],[4,2],[5,0]]
-    //         }
-    //     })
+    it('login ou sessão já ativa /login', async () => {
+        const result = await app.inject({
+            method: 'POST',
+            url: '/login',
+            payload: {
+                account: 100002,
+                password: [[4,2],[5,0],[4,2],[5,0],[4,2],[5,0]]
+            }
+        })
         
-    //     assert.deepEqual(result.statusCode, 200)   
-    //     assert.deepEqual(JSON.parse(result.payload).response, false)     
-    // })
+        assert.deepEqual(result.statusCode, 200)   
+        assert.deepEqual(JSON.parse(result.payload).response, false)     
+    })
     // it('usuario incorreto /login', async () => {
     //     const result = await app.inject({
     //         method: 'POST',
