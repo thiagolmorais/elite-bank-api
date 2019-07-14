@@ -5,6 +5,8 @@ const TransferRoutes = require('./src/routes/transferRoutes')
 const UserSchema = require('./src/db/strategies/mongodb/schemas/userSchema')
 const TransferSchema = require('./src/db/strategies/mongodb/schemas/transferSchema')
 
+/** */
+
 const Hapi = require('hapi')
 const HapiSwagger = require('hapi-swagger')
 const Vision = require('vision')
