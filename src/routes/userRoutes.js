@@ -182,7 +182,10 @@ class UserRoutes extends BaseRoute {
                 }
 
                 this.userDb.update(request.payload.account, {usertoken:''})
-                return
+                return {
+                    response: false,
+                    message: 'Sessão expirada'
+                }
                 
             }
         }
