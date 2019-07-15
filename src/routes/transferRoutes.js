@@ -69,7 +69,7 @@ class TransferRoutes extends BaseRoute {
                         message: 'Contas devem ser diferentes'
                     })
                 }
-                
+
                 if(request.payload.userToken != accountOrigin[0].usertoken) {
                     return ({
                         response: false,
@@ -77,7 +77,7 @@ class TransferRoutes extends BaseRoute {
                     })
                 }
 
-                const diff = Math.abs((account[0].tokentime - Date.now())/(1000 * 60))
+                const diff = Math.abs((accountOrigin[0].tokentime - Date.now())/(1000 * 60))
                 if(diff > 15) {
                     return ({
                         response: false,
