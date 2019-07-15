@@ -2,8 +2,6 @@
 
 ## Acesso
 
-Site -> https://elite-bank.herokuapp.com/login
-
 API -> https://elite-bank-api.herokuapp.com/documentation
 
 ## Configuração do ambiente
