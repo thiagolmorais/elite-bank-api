@@ -15,12 +15,9 @@ const Inert = require('inert')
 const app = new Hapi.Server({
     port: process.env.PORT || 5000,
     routes: {
-    cors: {
-        origin: [
-            'https://elite-bank.herokuapp.com/',
-            'https://elite-bank-homolog.herokuapp.com/'
-        ]
-    }
+        cors: {
+            origin: ['https://elite-bank-homolog.herokuapp.com']
+        }
     }
 
 })
