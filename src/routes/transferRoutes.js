@@ -100,8 +100,8 @@ class TransferRoutes extends BaseRoute {
                 await this.UserDB.update(request.payload.destination, {balance: destinationBalance.toString()})
 
                 const payload = request.payload
-                payload.preOriginBalance = accountOrigin[0].balance
-                payload.preDestinationBalance = accountDestination[0].balance
+                payload.preOriginBalance = originBalance
+                payload.preDestinationBalance = destinationBalance
                 
                 await this.TransferDB.create(payload)
 
