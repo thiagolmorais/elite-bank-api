@@ -13,7 +13,13 @@ const Vision = require('vision')
 const Inert = require('inert')
 
 const app = new Hapi.Server({
-    port: process.env.PORT || 5000
+    port: process.env.PORT || 5000,
+    routes: {
+        cors: {
+            origin: ['https://elite-bank-homolog.herokuapp.com']
+        }
+    }
+
 })
 
 function mapRoutes(instance, methods) {
