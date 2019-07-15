@@ -12,6 +12,7 @@ function cadastrar() {
             origin: 100002,
             destination: 100001,
             value: 100,
+            password: [[4,2],[5,0],[4,2],[5,0],[4,2],[5,0]],
             userToken: '9f127278-8670-464a-9328-8120f5092dc2'
         }
     });
