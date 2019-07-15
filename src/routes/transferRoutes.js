@@ -38,7 +38,6 @@ class TransferRoutes extends BaseRoute {
                         origin: Joi.number().required(),
                         destination: Joi.number().required(),
                         value: Joi.number().required(),
-                        password: Joi.array().required(),
                         userToken: Joi.string().required(),
                     }
                 },
@@ -70,20 +69,6 @@ class TransferRoutes extends BaseRoute {
                         message: 'Contas devem ser diferentes'
                     })
                 }
-                const passwordFront = request.payload.password;                
-                const passwordMongo = accountOrigin[0].password                               
-                const passwordArray = passwordMongo.split('') 
-                            
-                let auth = await passwordArray.every((v, k) => {
-                    return passwordFront[k].includes(parseInt(v))
-                })  
-
-                if(!auth) {
-                    return ({
-                        response: false,
-                        message: 'Senha incorreta!'
-                    })
-                }
 
                 if(request.payload.userToken != accountOrigin[0].usertoken) {
                     return ({
@@ -92,7 +77,7 @@ class TransferRoutes extends BaseRoute {
                     })
                 }
 
-                const diff = Math.abs((account[0].tokentime - Date.now())/(1000 * 60))
+                const diff = Math.abs((accountOrigin[0].tokentime - Date.now())/(1000 * 60))
                 if(diff > 15) {
                     return ({
                         response: false,
@@ -115,8 +100,8 @@ class TransferRoutes extends BaseRoute {
                 await this.UserDB.update(request.payload.destination, {balance: destinationBalance.toString()})
 
                 const payload = request.payload
-                payload.preOriginBalance = accountOrigin[0].balance
-                payload.preDestinationBalance = accountDestination[0].balance
+                payload.preOriginBalance = originBalance
+                payload.preDestinationBalance = destinationBalance
                 
                 await this.TransferDB.create(payload)
 
