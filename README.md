@@ -1,6 +1,9 @@
 # Bem vindo ao Elite-bank
 
 ## Sobre o Elite-bank
+## Acesso
+
+https://elite-bank.herokuapp.com/login
 
 ## Integrantes
 
@@ -15,9 +18,10 @@
 
 ### Framework utilizados
 
-mongo  | v4.0.10
-node   | v10.16.0
-docker | v18.09.2
+mongo  | v4.0.10 <br>
+node   | v10.16.0 <br>
+
+docker | v18.09.2 
 
 ### Instalando docker para usar o MongoDB
 
