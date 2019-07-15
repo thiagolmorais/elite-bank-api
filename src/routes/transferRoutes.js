@@ -38,7 +38,6 @@ class TransferRoutes extends BaseRoute {
                         origin: Joi.number().required(),
                         destination: Joi.number().required(),
                         value: Joi.number().required(),
-                        password: Joi.array().required(),
                         userToken: Joi.string().required(),
                     }
                 },
@@ -70,21 +69,7 @@ class TransferRoutes extends BaseRoute {
                         message: 'Contas devem ser diferentes'
                     })
                 }
-                const passwordFront = request.payload.password;                
-                const passwordMongo = accountOrigin[0].password                               
-                const passwordArray = passwordMongo.split('') 
-                            
-                let auth = await passwordArray.every((v, k) => {
-                    return passwordFront[k].includes(parseInt(v))
-                })  
-
-                if(!auth) {
-                    return ({
-                        response: false,
-                        message: 'Senha incorreta!'
-                    })
-                }
-
+                
                 if(request.payload.userToken != accountOrigin[0].usertoken) {
                     return ({
                         response: false,
