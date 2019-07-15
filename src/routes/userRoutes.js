@@ -1,5 +1,6 @@
 const BaseRoute = require('./base/baseRoute')
 const Joi = require('joi')
+const Boom = require('boom')
 const uuid = require('uuid/v4')
 class UserRoutes extends BaseRoute {
     constructor(userDb) {
@@ -12,6 +13,9 @@ class UserRoutes extends BaseRoute {
             path: '/login',
             method: 'POST',
             config:{
+                tags: ['api'],
+                description: 'Login',
+                notes: 'Retorna verdadeiro se os dados estiverem corretos',
                 validate: {
                     failAction: (request, h, err) => {
                         throw err;
@@ -196,14 +200,19 @@ class UserRoutes extends BaseRoute {
             path: '/user',
             method: 'GET',
             config:{
-                tags:['api'],
+                tags: ['api'],
+                description: 'Listar usuários',
+                notes: 'Pode filtar por nome e paginar',
                 validate: {
 
                 }
             },            
             handler: (request, headers) => {
-
-                return this.UserDb.read()
+                try { 
+                    return this.UserDb.read() 
+                } catch(error) {
+                    return Boom.internal();
+                }               
             }
         }
     }
@@ -235,7 +244,9 @@ class UserRoutes extends BaseRoute {
             path: '/user',
             method: 'POST',
             config: {
-
+                tags: ['api'],
+                description: 'Cria usuários',
+                notes: 'Serve para criar usuário',
                 validate: {
                     failAction: (request, h, err) => {
                         throw err;
@@ -251,9 +262,13 @@ class UserRoutes extends BaseRoute {
 
             },
             handler: (request, headers) => {
-                //inserir aqui regras de inserção;
-                const payload = request.payload
-                return this.UserDb.create(payload)
+                try {
+                    //inserir aqui regras de inserção;
+                    const payload = request.payload
+                    return this.UserDb.create(payload)
+                } catch(error) {
+                    return Boom.internal();
+                }
             }
         }
     }
@@ -299,6 +314,9 @@ class UserRoutes extends BaseRoute {
             path: '/user/{account}',
             method: 'PATCH',
             config: {
+                tags: ['api'],
+                description: 'Altera usuários',
+                notes: 'Serve para alterar as informações do usuário',
                 validate: {
                     failAction: (request, h, err) => {
                         throw err;
@@ -313,9 +331,13 @@ class UserRoutes extends BaseRoute {
 
             },
             handler: (request, headers) => {
-                const payload = request.payload;
-                const account = request.params.account;
-                return this.UserDb.update(account, payload)
+                try {
+                    const payload = request.payload;
+                    const account = request.params.account;                
+                    return this.UserDb.update(account, payload)
+                } catch(error) {
+                    return Boom.internal();
+                }
             }
         }
     }
