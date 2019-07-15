@@ -13,8 +13,8 @@ class ContextStrategy extends IDb {
   create(item) {
     return this._database.create(item);
   }
-  read(item) {
-    return this._database.read(item);
+  read(item, limit = 1000) {
+    return this._database.read(item, limit);
   }
   update(id, item) {
     return this._database.update(id, item);

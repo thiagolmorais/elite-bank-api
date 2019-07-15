@@ -11,6 +11,14 @@ const TransferSchema = new Mongoose.Schema({
     value: {
         type: Number,
         required: true
+    },
+    preOriginBalance: {
+        type: Number,
+        required: true
+    },    
+    preDestinationBalance: {
+        type: Number,
+        required: true
     },    
     insertedAt: {
         type: Date,
