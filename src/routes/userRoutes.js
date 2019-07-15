@@ -14,8 +14,8 @@ class UserRoutes extends BaseRoute {
             method: 'POST',
             config:{
                 tags: ['api'],
-                description: 'Login',
-                notes: 'Retorna verdadeiro se os dados estiverem corretos',
+                description: 'Realiza o login de um usário mediante senha',
+                notes: 'Retorna os dados da conta caso os dados estejam corretos',
                 validate: {
                     failAction: (request, h, err) => {
                         throw err;
@@ -99,6 +99,8 @@ class UserRoutes extends BaseRoute {
             method: 'POST',
             config:{
                 tags:['api'],
+                description: 'Realiza o logout de um usário',
+                notes:'Deve encerrar a sessão do usuário e invalidar o token que estiver ativo',
                 validate: {
                     failAction: (request, h, err) => {
                         throw err;
@@ -142,6 +144,8 @@ class UserRoutes extends BaseRoute {
             method: 'POST',
             config:{
                 tags:['api'],
+                description: 'Recebe o token do usuário para validação',
+                notes:'Deve retornar os dados da conta se o token estiver validado',
                 validate: {
                     failAction: (request, h, err) => {
                         throw err;
@@ -200,9 +204,6 @@ class UserRoutes extends BaseRoute {
             path: '/user',
             method: 'GET',
             config:{
-                tags: ['api'],
-                description: 'Listar usuários',
-                notes: 'Pode filtar por nome e paginar',
                 validate: {
 
                 }
@@ -222,7 +223,6 @@ class UserRoutes extends BaseRoute {
             path: '/user/{account}',
             method: 'GET',
             config:{
-                tags:['api'],
                 validate: {
                     failAction: (request, h, err) => {
                         throw err;
@@ -244,9 +244,6 @@ class UserRoutes extends BaseRoute {
             path: '/user',
             method: 'POST',
             config: {
-                tags: ['api'],
-                description: 'Cria usuários',
-                notes: 'Serve para criar usuário',
                 validate: {
                     failAction: (request, h, err) => {
                         throw err;
@@ -314,9 +311,6 @@ class UserRoutes extends BaseRoute {
             path: '/user/{account}',
             method: 'PATCH',
             config: {
-                tags: ['api'],
-                description: 'Altera usuários',
-                notes: 'Serve para alterar as informações do usuário',
                 validate: {
                     failAction: (request, h, err) => {
                         throw err;

@@ -11,10 +11,7 @@ class TransferRoutes extends BaseRoute {
         return {
             path: '/transfer',
             method: 'GET',
-            config:{
-                tags: ['api'],
-                description: 'Lista as transferências',
-                notes: 'Serve para listar as transferências',                
+            config:{               
             },
             handler: (request, headers) => {
                 try {
@@ -31,8 +28,8 @@ class TransferRoutes extends BaseRoute {
             method: 'POST',
             config: {
                 tags: ['api'],
-                description: 'Cria ...',
-                notes: 'Serve para criar ...',
+                description: 'Cria uma transferência entre contas',
+                notes: 'Realiza uma transfêrencia de valores de uma conta de origem para uma conta de destino',
                 validate: {
                     failAction: (request, h, err) => {
                         throw err;
@@ -136,6 +133,9 @@ class TransferRoutes extends BaseRoute {
             path: '/accounts/{account}/transfers/{userToken}',
             method: 'GET',
             config: {
+                tags: ['api'],
+                description: 'Recebe as transferências realizadas com uma conta desejada',
+                notes:'Recebe tanto as transferências que tiveram esta conta como destino e como origem',
                 validate: {
                     failAction: (request, headers, err) => {
                         throw err;
