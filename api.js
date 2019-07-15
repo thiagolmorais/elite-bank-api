@@ -16,7 +16,7 @@ const app = new Hapi.Server({
     port: process.env.PORT || 5000,
     routes: {
         cors: {
-            origin: ['https://elite-bank.herokuapp.com']
+            origin: ['https://elite-bank-homolog.herokuapp.com']
         }
     }
 
